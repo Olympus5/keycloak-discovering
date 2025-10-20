@@ -1,6 +1,6 @@
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    build: .
     command: start-dev
     environment:
       KC_HOSTNAME: localhost
