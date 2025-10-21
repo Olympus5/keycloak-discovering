@@ -9,9 +9,9 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.UserModel;
 
-public class HelloRequiredAction implements RequiredActionProvider, RequiredActionFactory {
+public class WithoutChallengeRequiredAction implements RequiredActionProvider, RequiredActionFactory {
     private static final String ID = "hello-required-action";
-    private static final Logger LOGGER = Logger.getLogger(HelloRequiredAction.class);
+    private static final Logger LOGGER = Logger.getLogger(WithoutChallengeRequiredAction.class);
 
     @Override
     public void evaluateTriggers(RequiredActionContext context) {
