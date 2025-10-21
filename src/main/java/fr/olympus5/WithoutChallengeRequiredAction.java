@@ -15,7 +15,7 @@ public class WithoutChallengeRequiredAction implements RequiredActionProvider, R
     public void evaluateTriggers(RequiredActionContext context) {
         LoggerUtils.markMethodEntry(this.getClass(), "evaluateTriggers");
 
-        if(context.getUser().getRequiredActionsStream().anyMatch(action -> UserModel.RequiredAction.VERIFY_EMAIL.name().equals(action))) {
+        if (context.getUser().getRequiredActionsStream().anyMatch(action -> UserModel.RequiredAction.VERIFY_EMAIL.name().equals(action))) {
             context.getUser().addRequiredAction(ID);
         }
     }
@@ -23,7 +23,7 @@ public class WithoutChallengeRequiredAction implements RequiredActionProvider, R
     @Override
     public void requiredActionChallenge(RequiredActionContext context) {
         LoggerUtils.markMethodEntry(this.getClass(), "requiredActionChallenge");
-        processAction(context);
+        this.processAction(context);
     }
 
     @Override
