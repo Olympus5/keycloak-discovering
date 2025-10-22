@@ -50,7 +50,14 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
     public CredentialTypeMetadata getCredentialTypeMetadata(CredentialTypeMetadataContext credentialTypeMetadataContext) {
         LoggerUtils.markMethodEntry(this.getClass(), "getCredentialTypeMetadata");
 
-        return null;
+        return CredentialTypeMetadata.builder()
+                .type(this.getType())
+                .category(CredentialTypeMetadata.Category.TWO_FACTOR)
+                .displayName(SecretQuestionCredentialProviderFactory.PROVIDER_ID)
+                .helpText("secret-question-text")
+                .createAction(SecretQuestionAuthenticatorFactory.PROVIDER_ID)
+                .removeable(false)
+                .build(this.session);
     }
 
     @Override
@@ -93,4 +100,6 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
 
         return !userModel.credentialManager().getStoredCredentialsByTypeStream(credentialType).findAny().isPresent();
     }
+
+
 }
