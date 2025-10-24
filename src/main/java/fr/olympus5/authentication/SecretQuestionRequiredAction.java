@@ -32,7 +32,7 @@ public class SecretQuestionRequiredAction implements RequiredActionProvider, Cre
     public void processAction(RequiredActionContext context) {
         LoggerUtils.markMethodEntry(this.getClass(), "processAction");
 
-        String answer = context.getHttpRequest().getDecodedFormParameters().getFirst("answer");
+        String answer = context.getHttpRequest().getDecodedFormParameters().getFirst("secret_answer");
         SecretQuestionCredentialProvider sqcp = (SecretQuestionCredentialProvider) context.getSession()
                 .getProvider(CredentialProvider.class, SecretQuestionCredentialProviderFactory.PROVIDER_ID);
         sqcp.createCredential(context.getRealm(), context.getUser(), SecretQuestionCredentialModel.createSecretQuestion("What is your mom's first name?", answer));
