@@ -2,6 +2,7 @@ package fr.olympus5.credential;
 
 import fr.olympus5.LoggerUtils;
 import fr.olympus5.authentication.SecretQuestionAuthenticatorFactory;
+import org.jboss.logging.Logger;
 import org.keycloak.common.util.Time;
 import org.keycloak.credential.*;
 import org.keycloak.models.KeycloakSession;
@@ -10,6 +11,8 @@ import org.keycloak.models.UserCredentialModel;
 import org.keycloak.models.UserModel;
 
 public class SecretQuestionCredentialProvider implements CredentialProvider<SecretQuestionCredentialModel>, CredentialInputValidator {
+    private static final Logger logger = Logger.getLogger(SecretQuestionCredentialProvider.class);
+
     private final KeycloakSession session;
 
     public SecretQuestionCredentialProvider(KeycloakSession session) {
@@ -39,10 +42,11 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
         LoggerUtils.markMethodEntry(this.getClass(), "isValid");
 
         if (!(credentialInput instanceof UserCredentialModel)) {
+            logger.debug("Expected instance of UserCredentialModel for CredentialInput");
             return false;
         }
 
-        if (!credentialInput.getType().equals(this.getType())) {
+        if (!credentialInput.getType().equals(getType())) {
             return false;
         }
 
@@ -52,8 +56,7 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
         }
 
         CredentialModel credentialModel = userModel.credentialManager().getStoredCredentialById(credentialInput.getCredentialId());
-        SecretQuestionCredentialModel sqcm = this.getCredentialFromModel(credentialModel);
-
+        SecretQuestionCredentialModel sqcm = getCredentialFromModel(credentialModel);
         return sqcm.getSecretQuestionSecretData().getAnswer().equals(challengeResponse);
     }
 
@@ -69,24 +72,24 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
         LoggerUtils.markMethodEntry(this.getClass(), "getCredentialTypeMetadata");
 
         return CredentialTypeMetadata.builder()
-                .type(this.getType())
+                .type(getType())
                 .category(CredentialTypeMetadata.Category.TWO_FACTOR)
                 .displayName(SecretQuestionCredentialProviderFactory.PROVIDER_ID)
                 .helpText("secret-question-text")
                 .createAction(SecretQuestionAuthenticatorFactory.PROVIDER_ID)
                 .removeable(false)
-                .build(this.session);
+                .build(session);
     }
 
     @Override
     public boolean isConfiguredFor(RealmModel realmModel, UserModel userModel, String credentialType) {
         LoggerUtils.markMethodEntry(this.getClass(), "isConfiguredFor");
 
-        if (!this.supportsCredentialType(this.getType())) {
+        if (!supportsCredentialType(credentialType)) {
             return false;
         }
 
-        return !userModel.credentialManager().getStoredCredentialsByTypeStream(credentialType).findAny().isPresent();
+        return userModel.credentialManager().getStoredCredentialsByTypeStream(credentialType).findAny().isPresent();
     }
 
     @Override

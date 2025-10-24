@@ -7,16 +7,18 @@ import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
-import org.keycloak.authentication.AuthenticationFlowContext;
-import org.keycloak.authentication.AuthenticationFlowError;
-import org.keycloak.authentication.Authenticator;
-import org.keycloak.authentication.CredentialValidator;
+import org.jboss.logging.Logger;
+import org.keycloak.authentication.*;
 import org.keycloak.credential.CredentialProvider;
 import org.keycloak.models.*;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 
 public class SecretQuestionAuthenticator implements Authenticator, CredentialValidator<SecretQuestionCredentialProvider> {
+    private static final Logger LOGGER = Logger.getLogger(SecretQuestionAuthenticator.class);
+
     @Override
     public void authenticate(AuthenticationFlowContext context) {
         LoggerUtils.markMethodEntry(this.getClass(), "authenticate");
@@ -37,7 +39,7 @@ public class SecretQuestionAuthenticator implements Authenticator, CredentialVal
         boolean result = cookie != null;
 
         if (result) {
-            System.out.println("Bypassing secret question because cookie is set");
+            LOGGER.info("Bypassing secret question because cookie is set");
         }
 
         return result;
@@ -108,14 +110,19 @@ public class SecretQuestionAuthenticator implements Authenticator, CredentialVal
     public boolean configuredFor(KeycloakSession session, RealmModel realm, UserModel user) {
         LoggerUtils.markMethodEntry(this.getClass(), "configuredFor");
 
-        return this.getCredentialProvider(session).isConfiguredFor(realm, user, this.getType(session));
+        return getCredentialProvider(session).isConfiguredFor(realm, user, getType(session));
     }
 
     @Override
     public void setRequiredActions(KeycloakSession session, RealmModel realm, UserModel user) {
         LoggerUtils.markMethodEntry(this.getClass(), "setRequiredActions");
 
-        user.addRequiredAction("SECRET_QUESTION_CONFIG");
+        user.addRequiredAction(SecretQuestionRequiredAction.PROVIDER_ID);
+    }
+
+    @Override
+    public List<RequiredActionFactory> getRequiredActions(KeycloakSession session) {
+        return Collections.singletonList((SecretQuestionRequiredActionFactory)session.getKeycloakSessionFactory().getProviderFactory(RequiredActionProvider.class, SecretQuestionRequiredAction.PROVIDER_ID));
     }
 
     @Override

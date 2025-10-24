@@ -29,7 +29,7 @@ public class SecretQuestionAuthenticatorFactory implements AuthenticatorFactory,
         property.setName("cookie.max.age");
         property.setLabel("Cookie Max Age");
         property.setType(ProviderConfigProperty.STRING_TYPE);
-        property.setHelpText("Maximum age in seconds of SECRET_QUESTION_COOKIE.");
+        property.setHelpText("Max age in seconds of the SECRET_QUESTION_COOKIE.");
         CONFIG_PROPERTIES.add(property);
     }
 
