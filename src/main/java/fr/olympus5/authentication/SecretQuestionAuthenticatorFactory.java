@@ -1,5 +1,6 @@
-package fr.olympus5;
+package fr.olympus5.authentication;
 
+import fr.olympus5.LoggerUtils;
 import org.keycloak.Config;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.authentication.AuthenticatorFactory;

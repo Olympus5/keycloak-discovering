@@ -1,5 +1,7 @@
-package fr.olympus5;
+package fr.olympus5.credential;
 
+import fr.olympus5.LoggerUtils;
+import fr.olympus5.authentication.SecretQuestionAuthenticatorFactory;
 import org.keycloak.common.util.Time;
 import org.keycloak.credential.*;
 import org.keycloak.models.KeycloakSession;

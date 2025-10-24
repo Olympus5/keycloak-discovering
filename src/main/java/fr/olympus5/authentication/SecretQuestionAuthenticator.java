@@ -1,5 +1,8 @@
-package fr.olympus5;
+package fr.olympus5.authentication;
 
+import fr.olympus5.LoggerUtils;
+import fr.olympus5.credential.SecretQuestionCredentialProvider;
+import fr.olympus5.credential.SecretQuestionCredentialProviderFactory;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.NewCookie;

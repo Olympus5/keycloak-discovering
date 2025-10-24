@@ -1,5 +1,6 @@
-package fr.olympus5;
+package fr.olympus5.credential;
 
+import fr.olympus5.LoggerUtils;
 import org.keycloak.credential.CredentialProvider;
 import org.keycloak.credential.CredentialProviderFactory;
 import org.keycloak.models.KeycloakSession;
