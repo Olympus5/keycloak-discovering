@@ -15,20 +15,6 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
     }
 
     @Override
-    public String getType() {
-        LoggerUtils.markMethodEntry(this.getClass(), "getType");
-
-        return SecretQuestionCredentialModel.TYPE;
-    }
-
-    @Override
-    public SecretQuestionCredentialModel getCredentialFromModel(CredentialModel credentialModel) {
-        LoggerUtils.markMethodEntry(this.getClass(), "getCredentialFromModel");
-
-        return SecretQuestionCredentialModel.createFromCredentialModel(credentialModel);
-    }
-
-    @Override
     public CredentialModel createCredential(RealmModel realmModel, UserModel userModel, SecretQuestionCredentialModel secretQuestionCredentialModel) {
         LoggerUtils.markMethodEntry(this.getClass(), "createCredential");
 
@@ -44,20 +30,6 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
         LoggerUtils.markMethodEntry(this.getClass(), "deleteCredential");
 
         return userModel.credentialManager().removeStoredCredentialById(credentialId);
-    }
-
-    @Override
-    public CredentialTypeMetadata getCredentialTypeMetadata(CredentialTypeMetadataContext credentialTypeMetadataContext) {
-        LoggerUtils.markMethodEntry(this.getClass(), "getCredentialTypeMetadata");
-
-        return CredentialTypeMetadata.builder()
-                .type(this.getType())
-                .category(CredentialTypeMetadata.Category.TWO_FACTOR)
-                .displayName(SecretQuestionCredentialProviderFactory.PROVIDER_ID)
-                .helpText("secret-question-text")
-                .createAction(SecretQuestionAuthenticatorFactory.PROVIDER_ID)
-                .removeable(false)
-                .build(this.session);
     }
 
     @Override
@@ -84,10 +56,24 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
     }
 
     @Override
-    public boolean supportsCredentialType(String type) {
-        LoggerUtils.markMethodEntry(this.getClass(), "supportsCredentialType");
+    public SecretQuestionCredentialModel getCredentialFromModel(CredentialModel credentialModel) {
+        LoggerUtils.markMethodEntry(this.getClass(), "getCredentialFromModel");
 
-        return this.getType().equals(type);
+        return SecretQuestionCredentialModel.createFromCredentialModel(credentialModel);
+    }
+
+    @Override
+    public CredentialTypeMetadata getCredentialTypeMetadata(CredentialTypeMetadataContext credentialTypeMetadataContext) {
+        LoggerUtils.markMethodEntry(this.getClass(), "getCredentialTypeMetadata");
+
+        return CredentialTypeMetadata.builder()
+                .type(this.getType())
+                .category(CredentialTypeMetadata.Category.TWO_FACTOR)
+                .displayName(SecretQuestionCredentialProviderFactory.PROVIDER_ID)
+                .helpText("secret-question-text")
+                .createAction(SecretQuestionAuthenticatorFactory.PROVIDER_ID)
+                .removeable(false)
+                .build(this.session);
     }
 
     @Override
@@ -99,6 +85,20 @@ public class SecretQuestionCredentialProvider implements CredentialProvider<Secr
         }
 
         return !userModel.credentialManager().getStoredCredentialsByTypeStream(credentialType).findAny().isPresent();
+    }
+
+    @Override
+    public boolean supportsCredentialType(String type) {
+        LoggerUtils.markMethodEntry(this.getClass(), "supportsCredentialType");
+
+        return this.getType().equals(type);
+    }
+
+    @Override
+    public String getType() {
+        LoggerUtils.markMethodEntry(this.getClass(), "getType");
+
+        return SecretQuestionCredentialModel.TYPE;
     }
 
 
