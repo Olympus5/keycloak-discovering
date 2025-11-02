@@ -1,9 +1,9 @@
-package fr.olympus5.authentication;
+package fr.olympus5.secretquestion.authentication;
 
 import fr.olympus5.LoggerUtils;
-import fr.olympus5.credential.SecretQuestionCredentialModel;
-import fr.olympus5.credential.SecretQuestionCredentialProvider;
-import fr.olympus5.credential.SecretQuestionCredentialProviderFactory;
+import fr.olympus5.secretquestion.credential.SecretQuestionCredentialModel;
+import fr.olympus5.secretquestion.credential.SecretQuestionCredentialProvider;
+import fr.olympus5.secretquestion.credential.SecretQuestionCredentialProviderFactory;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.authentication.CredentialRegistrator;
 import org.keycloak.authentication.RequiredActionContext;

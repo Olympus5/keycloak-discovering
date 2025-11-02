@@ -1,7 +1,7 @@
-package fr.olympus5.credential;
+package fr.olympus5.secretquestion.credential;
 
 import fr.olympus5.LoggerUtils;
-import fr.olympus5.authentication.SecretQuestionAuthenticatorFactory;
+import fr.olympus5.secretquestion.authentication.SecretQuestionAuthenticatorFactory;
 import org.jboss.logging.Logger;
 import org.keycloak.common.util.Time;
 import org.keycloak.credential.*;

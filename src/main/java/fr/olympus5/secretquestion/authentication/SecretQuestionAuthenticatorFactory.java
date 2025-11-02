@@ -1,4 +1,4 @@
-package fr.olympus5.authentication;
+package fr.olympus5.secretquestion.authentication;
 
 import fr.olympus5.LoggerUtils;
 import org.keycloak.Config;

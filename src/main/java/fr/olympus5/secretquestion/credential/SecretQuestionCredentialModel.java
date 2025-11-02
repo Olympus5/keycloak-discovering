@@ -1,4 +1,4 @@
-package fr.olympus5.credential;
+package fr.olympus5.secretquestion.credential;
 
 import org.keycloak.common.util.Time;
 import org.keycloak.credential.CredentialModel;

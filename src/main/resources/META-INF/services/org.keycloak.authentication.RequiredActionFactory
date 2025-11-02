@@ -1,2 +1,2 @@
 fr.olympus5.WithoutChallengeRequiredAction
-fr.olympus5.authentication.SecretQuestionRequiredActionFactory
+fr.olympus5.secretquestion.authentication.SecretQuestionRequiredActionFactory

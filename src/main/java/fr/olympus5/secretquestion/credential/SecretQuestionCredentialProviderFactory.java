@@ -1,4 +1,4 @@
-package fr.olympus5.credential;
+package fr.olympus5.secretquestion.credential;
 
 import fr.olympus5.LoggerUtils;
 import org.keycloak.credential.CredentialProvider;

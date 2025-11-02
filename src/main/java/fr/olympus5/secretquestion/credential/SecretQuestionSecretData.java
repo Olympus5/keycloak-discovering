@@ -1,4 +1,4 @@
-package fr.olympus5.credential;
+package fr.olympus5.secretquestion.credential;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
