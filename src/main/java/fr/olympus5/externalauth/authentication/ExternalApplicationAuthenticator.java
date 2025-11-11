@@ -1,12 +1,13 @@
-package fr.olympus5.authentication;
+package fr.olympus5.externalauth.authentication;
 
 import fr.olympus5.LoggerUtils;
-import fr.olympus5.token.ExternalApplicationNotificationActionToken;
-import fr.olympus5.token.ExternalApplicationNotificationActionTokenHandler;
+import fr.olympus5.externalauth.token.ExternalApplicationNotificationActionToken;
+import fr.olympus5.externalauth.token.ExternalApplicationNotificationActionTokenHandler;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.keycloak.TokenVerifier;
 import org.keycloak.authentication.AuthenticationFlowContext;
+import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.common.VerificationException;
 import org.keycloak.common.util.Time;
@@ -16,6 +17,7 @@ import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.representations.JsonWebToken;
 import org.keycloak.services.Urls;
+import org.keycloak.services.messages.Messages;
 import org.keycloak.sessions.AuthenticationSessionModel;
 
 import java.io.UnsupportedEncodingException;
@@ -92,7 +94,7 @@ public class ExternalApplicationAuthenticator implements Authenticator {
 
         AuthenticationSessionModel authSession = context.getAuthenticationSession();
 
-        if (Objects.equals(authSession.getAuthNote(ExternalApplicationNotificationActionTokenHandler.INITIATED_BY_ACTION_TOKEN_EXT_APP), "true")) {
+        if (!Objects.equals(authSession.getAuthNote(ExternalApplicationNotificationActionTokenHandler.INITIATED_BY_ACTION_TOKEN_EXT_APP), "true")) {
             authenticate(context);
             return;
         }
@@ -117,7 +119,10 @@ public class ExternalApplicationAuthenticator implements Authenticator {
             appToken.getOtherClaims().forEach((k, v) ->
                     user.setAttribute(appId + "." + k, Collections.singletonList(String.valueOf(v))));
         } catch (VerificationException e) {
-            throw new RuntimeException(e);
+            logger.error("Error handling action token", e);
+            context.failure(AuthenticationFlowError.INTERNAL_ERROR, context.form()
+                    .setError(Messages.INVALID_PARAMETER)
+                    .createErrorPage(Response.Status.INTERNAL_SERVER_ERROR));
         }
 
         context.success();

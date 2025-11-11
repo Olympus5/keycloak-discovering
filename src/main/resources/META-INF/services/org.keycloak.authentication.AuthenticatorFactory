@@ -1,2 +1,2 @@
 fr.olympus5.secretquestion.authentication.SecretQuestionAuthenticatorFactory
-fr.olympus5.authentication.ExternalApplicationAuthenticatorFactory
+fr.olympus5.externalauth.authentication.ExternalApplicationAuthenticatorFactory

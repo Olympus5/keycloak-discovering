@@ -1,4 +1,4 @@
-package fr.olympus5.token;
+package fr.olympus5.externalauth.token;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.keycloak.authentication.actiontoken.DefaultActionToken;

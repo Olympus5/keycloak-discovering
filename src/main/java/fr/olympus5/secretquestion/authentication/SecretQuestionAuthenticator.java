@@ -63,6 +63,23 @@ public class SecretQuestionAuthenticator implements Authenticator, CredentialVal
         context.success();
     }
 
+    private boolean validateAnswer(AuthenticationFlowContext context) {
+        LoggerUtils.markMethodEntry(this.getClass(), "validateAnswer");
+
+        MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
+        String secret = formData.getFirst("secret_answer");
+        String credentialId = formData.getFirst("credentialId");
+
+        if (credentialId == null || credentialId.isEmpty()) {
+            credentialId = getCredentialProvider(context.getSession())
+                    .getDefaultCredential(context.getSession(), context.getRealm(), context.getUser()).getId();
+        }
+
+        UserCredentialModel input = new UserCredentialModel(credentialId, getType(context.getSession()), secret);
+
+        return getCredentialProvider(context.getSession()).isValid(context.getRealm(), context.getUser(), input);
+    }
+
     private void setCookie(AuthenticationFlowContext context) {
         LoggerUtils.markMethodEntry(this.getClass(), "setCookie");
 
@@ -80,23 +97,6 @@ public class SecretQuestionAuthenticator implements Authenticator, CredentialVal
                 .secure(false)
                 .build();
         context.getSession().getContext().getHttpResponse().setCookieIfAbsent(newCookie);
-    }
-
-    private boolean validateAnswer(AuthenticationFlowContext context) {
-        LoggerUtils.markMethodEntry(this.getClass(), "validateAnswer");
-
-        MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
-        String secret = formData.getFirst("secret_answer");
-        String credentialId = formData.getFirst("credentialId");
-
-        if (credentialId == null || credentialId.isEmpty()) {
-            credentialId = getCredentialProvider(context.getSession())
-                    .getDefaultCredential(context.getSession(), context.getRealm(), context.getUser()).getId();
-        }
-
-        UserCredentialModel input = new UserCredentialModel(credentialId, getType(context.getSession()), secret);
-
-        return getCredentialProvider(context.getSession()).isValid(context.getRealm(), context.getUser(), input);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package fr.olympus5.token;
+package fr.olympus5.externalauth.token;
 
 import fr.olympus5.LoggerUtils;
 import jakarta.ws.rs.core.Response;
