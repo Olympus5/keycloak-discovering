@@ -1,10 +1,10 @@
 services:
   keycloak:
     build: .
-    command: start-dev
+    command: start-dev --spi-action-token-handler-external-app-notification-hmac-secret=aSqzP4reFgWR4j94BDT1r+81QYp/NYbY9SBwXtqV1ko=
     environment:
       KC_HOSTNAME: localhost
-      KC_HTTP_PORT: 8080
+      KC_HTTP_PORT: 8180
       KC_HTTP_ENABLED: true
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -15,7 +15,7 @@ services:
       KC_DB_PASSWORD: password
       JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     ports:
-      - "8080:8080"
+      - "8180:8180"
       - "5005:5005"
     networks:
       - keycloak_network

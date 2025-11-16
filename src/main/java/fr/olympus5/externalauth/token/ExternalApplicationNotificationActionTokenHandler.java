@@ -46,7 +46,7 @@ public class ExternalApplicationNotificationActionTokenHandler extends AbstractA
         LoggerUtils.markMethodEntry(this.getClass(), "getVerifiers");
 
         return TokenUtils.predicates(
-                t -> tokenContext.getUriInfo().getQueryParameters().getFirst(QUERY_PARAM_APP_TOKEN) == null,
+                t -> tokenContext.getUriInfo().getQueryParameters().getFirst(QUERY_PARAM_APP_TOKEN) != null,
                 t -> isApplicationTokenValid(t, tokenContext)
         );
     }
@@ -90,6 +90,8 @@ public class ExternalApplicationNotificationActionTokenHandler extends AbstractA
 
     @Override
     public void init(Config.Scope config) {
+        LoggerUtils.markMethodEntry(this.getClass(), "init");
+
         String secret = config.get("hmacSecret", null);
 
         if (secret == null) {
